@@ -349,18 +349,43 @@ class _DetailButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 44,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.green,
-        borderRadius: BorderRadius.circular(10),
+    return FilledButton(
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: AppColors.card,
+              title: const Text(
+                '锦标赛详情',
+                style: TextStyle(color: Colors.white),
+              ),
+              content: const Text(
+                '本月盈利奖金 R\$ 200.00，倒计时结束后开奖。',
+                style: TextStyle(color: AppColors.muted),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text(
+                    '关闭',
+                    style: TextStyle(color: AppColors.green),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.green,
+        foregroundColor: const Color(0xFF07301A),
+        minimumSize: const Size.fromHeight(44),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: const Text(
         '详细',
         style: TextStyle(
-          color: Color(0xFF07301A),
           fontSize: 16,
           fontWeight: FontWeight.w800,
         ),

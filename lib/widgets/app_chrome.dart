@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 
+import '../pages/login_page.dart';
 import '../theme.dart';
 
 class HeaderBar extends StatelessWidget {
   const HeaderBar({super.key});
+
+  Future<void> _open(
+    BuildContext context, {
+    required Widget page,
+    required String successText,
+  }) async {
+    final ok = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => page),
+    );
+    if (ok == true && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(successText),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,25 +32,42 @@ class HeaderBar extends StatelessWidget {
         children: [
           const _Logo(),
           const Spacer(),
-          const Text(
-            '登录',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
+          TextButton(
+            onPressed: () => _open(
+              context,
+              page: const LoginPage(),
+              successText: '登录成功',
+            ),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            ),
+            child: const Text(
+              '登录',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          const SizedBox(width: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.green,
-              borderRadius: BorderRadius.circular(8),
+          const SizedBox(width: 4),
+          FilledButton(
+            onPressed: () => _open(
+              context,
+              page: const RegisterPage(),
+              successText: '注册成功',
+            ),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.green,
+              foregroundColor: const Color(0xFF07301A),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: const Text(
               '注册',
               style: TextStyle(
-                color: Color(0xFF07301A),
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
               ),
@@ -178,25 +214,64 @@ class ChatFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppColors.green,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.green.withValues(alpha: 0.35),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+    return Semantics(
+      button: true,
+      label: '客服',
+      child: GestureDetector(
+      onTap: () {
+        showModalBottomSheet<void>(
+          context: context,
+          backgroundColor: AppColors.card,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
-        ],
+          builder: (context) {
+            return const Padding(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '在线客服',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '有问题可以在这里联系客服。',
+                    style: TextStyle(color: AppColors.muted, fontSize: 14),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          color: AppColors.green,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.green.withValues(alpha: 0.35),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: const Icon(
+          Icons.sentiment_satisfied_alt,
+          color: Color(0xFF07301A),
+          size: 32,
+        ),
       ),
-      child: const Icon(
-        Icons.sentiment_satisfied_alt,
-        color: Color(0xFF07301A),
-        size: 32,
-      ),
+    ),
     );
   }
 }
