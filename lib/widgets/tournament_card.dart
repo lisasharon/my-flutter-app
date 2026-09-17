@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
-import 'app_chrome.dart';
+import 'home_widgets.dart';
 
 class TournamentCard extends StatelessWidget {
   const TournamentCard({super.key});

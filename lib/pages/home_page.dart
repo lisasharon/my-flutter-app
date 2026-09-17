@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
-import '../widgets/app_chrome.dart';
+import '../widgets/bottom_nav.dart';
+import '../widgets/header_bar.dart';
+import '../widgets/home_widgets.dart';
 import '../widgets/hot_games_section.dart';
 import '../widgets/promo_banner.dart';
 import '../widgets/tournament_card.dart';
+import 'search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,10 +66,18 @@ class _LobbyTab extends StatelessWidget {
     return Stack(
       children: [
         ListView(
+          clipBehavior: Clip.hardEdge,
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 80),
           children: [
             const PromoBanner(),
-            const GameSearchBar(),
+            GameSearchBar(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SearchPage()),
+                );
+              },
+            ),
             CategoryTabs(selected: category, onSelected: onCategory),
             const TournamentCard(),
             const HotGamesSection(),

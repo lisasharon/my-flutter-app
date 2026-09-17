@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'UPBET',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
+      scrollBehavior: const AppScrollBehavior(),
       builder: (context, child) {
         return LayoutBuilder(
           builder: (context, constraints) {

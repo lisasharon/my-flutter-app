@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:my_app/main.dart';
+import 'package:my_app/pages/search_page.dart';
 
 void main() {
   Future<void> pumpApp(WidgetTester tester) async {
@@ -50,5 +51,31 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('锦标赛详情'), findsNothing);
+  });
+
+  testWidgets('search bar opens hot search page', (tester) async {
+    await pumpApp(tester);
+
+    await tester.tap(find.text('搜索游戏'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('热门搜索'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(SearchPage), matching: find.text('登录')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: find.byType(SearchPage), matching: find.text('注册')),
+      findsOneWidget,
+    );
+    expect(find.text('0.00'), findsNothing);
+    expect(find.text('哼哼哼'), findsOneWidget);
+    expect(find.text('埃及绿宝石'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('关闭搜索'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('热门搜索'), findsNothing);
+    expect(find.text('锦标赛'), findsOneWidget);
   });
 }
