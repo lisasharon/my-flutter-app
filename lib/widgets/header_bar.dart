@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/login_page.dart';
+import '../session.dart';
 import '../theme.dart';
 
 class HeaderBar extends StatelessWidget {
@@ -15,6 +16,7 @@ class HeaderBar extends StatelessWidget {
       MaterialPageRoute(builder: (_) => page),
     );
     if (ok == true && context.mounted) {
+      SessionScope.of(context).signIn();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(successText),

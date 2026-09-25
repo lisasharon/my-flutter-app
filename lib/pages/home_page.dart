@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../session.dart';
 import '../theme.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/header_bar.dart';
@@ -21,20 +22,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final loggedIn = SessionScope.of(context).loggedIn;
+    final showHeader = _navIndex != 4 || loggedIn;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          const SafeArea(bottom: false, child: HeaderBar()),
+          if (showHeader) const SafeArea(bottom: false, child: HeaderBar()),
           Expanded(
             child: IndexedStack(
               index: _navIndex,
-              children: const [
-                BrowsePage(),
-                LobbyPage(),
-                SportsPage(),
-                AffiliatePage(),
-                ProfilePage(),
+              children: [
+                const BrowsePage(),
+                const LobbyPage(),
+                const SportsPage(),
+                const AffiliatePage(),
+                ProfilePage(
+                  onClose: () => setState(() => _navIndex = 1),
+                ),
               ],
             ),
           ),

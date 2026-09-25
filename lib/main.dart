@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'pages/home_page.dart';
+import 'session.dart';
 import 'theme.dart';
 
 void main() {
@@ -17,8 +18,33 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _session = Session();
+
+  @override
+  void dispose() {
+    _session.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SessionScope(
+      session: _session,
+      child: const _UpbetApp(),
+    );
+  }
+}
+
+class _UpbetApp extends StatelessWidget {
+  const _UpbetApp();
 
   @override
   Widget build(BuildContext context) {
